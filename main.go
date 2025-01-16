@@ -174,6 +174,11 @@ func main() {
 		}
 
 		if !found {
+			if !strings.Contains(recordOnCF.Comment, "magicmagicdns") {
+				fmt.Println("Skip deleting record: ", recordOnCF.Name, " ", recordOnCF.Content, " because it's not created by magicmagicdns")
+				continue
+			}
+
 			fmt.Println("Deleting record: ", recordOnCF.Name, " ", recordOnCF.Content)
 			err := api.DeleteDNSRecord(context.Background(), zoneIdentifier, recordOnCF.ID)
 			if err != nil {
