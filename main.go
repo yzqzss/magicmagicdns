@@ -102,16 +102,19 @@ func main() {
 	MagicRecordsToKeep := []cloudflare.DNSRecord{}
 
 	for _, peer := range status.Peers {
-		dnsName := strings.ReplaceAll(peer.DNSName, magicDNSSuffix+".", "")
 		fmt.Println("<= ID: ", peer.ID, " =>")
 		fmt.Println("DNSName: ", peer.DNSName)
+		dnsName := strings.ReplaceAll(peer.DNSName, magicDNSSuffix+".", "")
 		fmt.Println("DNSName (new): ", dnsName)
 		fmt.Println("TailscaleIPs: ", strings.Join(peer.TailscaleIPs, "; "))
 
 		ipToUse := peer.TailscaleIPs[0]
+
 		if !strings.HasSuffix(dnsName, ".") {
-			panic("dnsName must end with a dot: " + dnsName)
+			panic("Invalid DNSName, must end with dot: " + dnsName)
 		}
+		dnsName = dnsName[:len(dnsName)-1] // remove trailing dot
+
 		domainToUse := dnsName + MAGIC_DOMAIN_SUFFIX
 
 		fmt.Println("domainToUse: ", domainToUse, " ipToUse: ", ipToUse)
