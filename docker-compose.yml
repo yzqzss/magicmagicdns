@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  magicmagicdns:
+    image: magicmagicdns
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: magicmagicdns
+    restart: always
+    hostname: magicmagicdns
+    environment:
+      - RUN_FOREVER=true
+      - CF_API_TOKEN=
+      - CF_ZONE_DOMAIN=
+      - MAGIC_DOMAIN_SUFFIX=
+      - TAILSCALE_AUTHKEY=
