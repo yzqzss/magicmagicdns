@@ -32,7 +32,7 @@ type Status struct {
 func GetTailscaleStatus() (Status, error) {
 	status := Status{}
 	// exec tailscale status --json
-	cmd := exec.Command("tailscale", "status", "--json")
+	cmd := exec.Command("tailscale", "status", "--self", "--json")
 	out, err := cmd.Output()
 	if err != nil {
 		return status, err
