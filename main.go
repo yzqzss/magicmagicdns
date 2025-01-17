@@ -55,11 +55,11 @@ func Now() string {
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 }
 
-func main() {
+func run() {
 	MAGIC_DOMAIN_SUFFIX := os.Getenv("MAGIC_DOMAIN_SUFFIX")
 	CF_ZONE_DOMAIN := os.Getenv("CF_ZONE_DOMAIN")
 
@@ -196,4 +196,20 @@ func main() {
 	}
 
 	fmt.Println("=== Done ===")
+}
+
+func isRunForever() bool {
+	return os.Getenv("RUN_FOREVER") == "true"
+}
+
+func main() {
+	if isRunForever() {
+		for {
+			fmt.Println(Now())
+			run()
+			time.Sleep(60 * time.Second)
+
+		}
+	}
+	run()
 }
