@@ -25,6 +25,7 @@ type CurrentTailnet struct {
 }
 
 type Status struct {
+	Self           Peer            `json:"Self"`
 	CurrentTailnet CurrentTailnet  `json:"CurrentTailnet"`
 	Peers          map[string]Peer `json:"Peer"`
 }
@@ -39,6 +40,10 @@ func GetTailscaleStatus() (Status, error) {
 	}
 	// parse json
 	json.Unmarshal(out, &status)
+
+	// append self to peers
+	status.Peers[status.Self.ID] = status.Self
+
 	return status, nil
 }
 
